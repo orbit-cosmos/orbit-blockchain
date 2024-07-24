@@ -37,7 +37,7 @@ bootnode --nodekey boot.key
 
 
 
-
+## send tx
 eth.sendTransaction({from:"0xb420eA2C43AcabbA17881E49957731B53fc2a5fd",to:"0xafdd5d4be7b2c76471127ac6036c27f2fe1dc558",value:0x1b1ae4d6e2ef500000})
-
+## check balance
 web3.fromWei(eth.getBalance("0xb420eA2C43AcabbA17881E49957731B53fc2a5fd"))
