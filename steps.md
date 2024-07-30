@@ -15,7 +15,7 @@ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 
 
 ## start node1
-./build/bin/geth --bootnodes enode://954df65fdf737b1dcb790b5dc7941682be3a063a7a5c8fdb9b3e4c2eaa79f83e5157a2fcefd7821168ac1add50430175cfb4c0d3f37487edc4b3f93380a2a725@192.168.18.39:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1   --unlock 0xb420eA2C43AcabbA17881E49957731B53fc2a5fd --password ./node1/password.txt --port 30306  --authrpc.port 8552
+ ./build/bin/geth --bootnodes enode://954df65fdf737b1dcb790b5dc7941682be3a063a7a5c8fdb9b3e4c2eaa79f83e5157a2fcefd7821168ac1add50430175cfb4c0d3f37487edc4b3f93380a2a725@192.168.18.39:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --password ./node1/password.txt --port 30306  --authrpc.port 8552 --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock
 
 
 
