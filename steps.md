@@ -15,16 +15,15 @@ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 
 
 ## start node1
- ./build/bin/geth --bootnodes enode://954df65fdf737b1dcb790b5dc7941682be3a063a7a5c8fdb9b3e4c2eaa79f83e5157a2fcefd7821168ac1add50430175cfb4c0d3f37487edc4b3f93380a2a725@192.168.18.39:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --password ./node1/password.txt --port 30306  --authrpc.port 8552 --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock
-
+ ./build/bin/geth --bootnodes enode://eb423fe1c2383c01dd7342c4606239b6e15f979f183326c777ccccb12320f184f68df6d7784c153553c4092412b65477b28adc7da575f351acf7affc33016369@127.0.0.1:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --password ./node1/password.txt --port 30304  --authrpc.port 8551 --miner.etherbase=0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 --mine --unlock 0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 -allow-insecure-unlock 
 
 
 
 ## start node2
-./build/bin/geth --bootnodes "enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@127.0.0.1:30301"  --networkid=271997 --datadir ./node2  --miner.etherbase=0xafdd5d4be7b2c76471127ac6036c27f2fe1dc558 --mine --unlock 0xafdd5d4be7b2c76471127ac6036c27f2fe1dc558 --password ./node2/password.txt --port 30307  --authrpc.port 8552
+./build/bin/geth --bootnodes enode://eb423fe1c2383c01dd7342c4606239b6e15f979f183326c777ccccb12320f184f68df6d7784c153553c4092412b65477b28adc7da575f351acf7affc33016369@192.168.18.39:30305  --networkid=271997 --datadir ./node2 --unlock 0x848a7752A170da237126D53dC16454B29F505aaF --password ./node2/password.txt --port 30307  --authrpc.port 8552
 
 ## connect to geth JavaScript console
-./build/bin/geth attach ./node2/geth.ipc      
+./build/bin/geth attach ./node1/geth.ipc      
 
 
 
@@ -39,6 +38,6 @@ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 
 
 ## send tx
-eth.sendTransaction({from:"0xb420eA2C43AcabbA17881E49957731B53fc2a5fd",to:"0xafdd5d4be7b2c76471127ac6036c27f2fe1dc558",value:0x1b1ae4d6e2ef500000})
+eth.sendTransaction({from:"0x6f2be83aa9179e71dada3e94b274e9dbf10e4702",to:"0xFD01A2868caACaceB32636fa8A7391f732689Ef9",value:50000000000})
 ## check balance
 web3.fromWei(eth.getBalance("0xb420eA2C43AcabbA17881E49957731B53fc2a5fd"))
