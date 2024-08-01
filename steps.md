@@ -20,7 +20,7 @@ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 
 
 ## start node2
-./build/bin/geth --bootnodes enode://eb423fe1c2383c01dd7342c4606239b6e15f979f183326c777ccccb12320f184f68df6d7784c153553c4092412b65477b28adc7da575f351acf7affc33016369@192.168.18.39:30305  --networkid=271997 --datadir ./node2 --unlock 0x848a7752A170da237126D53dC16454B29F505aaF --password ./node2/password.txt --port 30307  --authrpc.port 8552
+ ./build/bin/geth --bootnodes enode://eb423fe1c2383c01dd7342c4606239b6e15f979f183326c777ccccb12320f184f68df6d7784c153553c4092412b65477b28adc7da575f351acf7affc33016369@192.168.18.39:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --password ./node1/password.txt --port 30306  --authrpc.port 8552 --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock
 
 ## connect to geth JavaScript console
 ./build/bin/geth attach ./node1/geth.ipc      
