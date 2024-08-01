@@ -6,6 +6,10 @@
         "eip155Block": 0,
         "eip158Block": 0,
         "byzantiumBlock": 0,
+        "constantinopleBlock": 0,
+        "petersburgBlock": 0,
+        "istanbulBlock": 0,
+        "berlinBlock": 0,
         "clique": {
             "period": 3,
             "epoch": 30000
@@ -20,7 +24,7 @@
         "0x6f2be83aa9179e71dada3e94b274e9dbf10e4702": {
             "balance": "0x3635c9adc5dea00000"
         },
-        "0x848a7752A170da237126D53dC16454B29F505aaF": {
+        "0xb420ea2c43acabba17881e49957731b53fc2a5fd": {
             "balance": "0x3635c9adc5dea00000"
         }
     }
