@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"
+	"github.com/orbit-cosmos/orbit-blockchain/core/vm"
 )
 
 var _ = (*callFrameMarshaling)(nil)

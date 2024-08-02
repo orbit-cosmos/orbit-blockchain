@@ -20,10 +20,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/forkid"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/core/forkid"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enode"
 )
 
 // Tests that handshake failures are detected and reported correctly.

@@ -21,9 +21,9 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/holiman/uint256"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/rlp"
 )
 
 func decodeEncode(input []byte, val interface{}, i int) {

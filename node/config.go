@@ -25,11 +25,11 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p"
+	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 )
 
 const (

@@ -17,7 +17,7 @@
 package server
 
 import (
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/orbit-cosmos/orbit-blockchain/metrics"
 )
 
 var (

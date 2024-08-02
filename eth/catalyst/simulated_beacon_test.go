@@ -22,16 +22,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/core"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto"
+	"github.com/orbit-cosmos/orbit-blockchain/eth"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/downloader"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/ethconfig"
+	"github.com/orbit-cosmos/orbit-blockchain/node"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
 )
 
 func startSimulatedBeaconEthService(t *testing.T, genesis *core.Genesis) (*node.Node, *eth.Ethereum, *SimulatedBeacon) {

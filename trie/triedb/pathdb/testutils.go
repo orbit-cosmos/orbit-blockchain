@@ -20,11 +20,11 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/trie/trienode"
-	"github.com/ethereum/go-ethereum/trie/triestate"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto"
+	"github.com/orbit-cosmos/orbit-blockchain/trie/trienode"
+	"github.com/orbit-cosmos/orbit-blockchain/trie/triestate"
 	"golang.org/x/exp/slices"
 )
 

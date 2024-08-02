@@ -19,11 +19,11 @@ package blobpool
 import (
 	"errors"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/holiman/billy"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/rlp"
 )
 
 // limboBlob is a wrapper around an opaque blobset that also contains the tx hash

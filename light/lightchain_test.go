@@ -22,14 +22,14 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/consensus/ethash"
+	"github.com/orbit-cosmos/orbit-blockchain/core"
+	"github.com/orbit-cosmos/orbit-blockchain/core/rawdb"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/ethdb"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
+	"github.com/orbit-cosmos/orbit-blockchain/trie"
 )
 
 // So we can deterministically seed different blockchains

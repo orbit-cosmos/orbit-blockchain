@@ -35,12 +35,12 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/gorilla/websocket"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/node"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enode"
+	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 )
 
 func init() {

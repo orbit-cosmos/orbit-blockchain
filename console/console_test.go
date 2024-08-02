@@ -25,14 +25,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/internal/jsre"
-	"github.com/ethereum/go-ethereum/miner"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/console/prompt"
+	"github.com/orbit-cosmos/orbit-blockchain/core"
+	"github.com/orbit-cosmos/orbit-blockchain/eth"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/ethconfig"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/jsre"
+	"github.com/orbit-cosmos/orbit-blockchain/miner"
+	"github.com/orbit-cosmos/orbit-blockchain/node"
 )
 
 const (

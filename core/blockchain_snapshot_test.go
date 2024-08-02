@@ -29,13 +29,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/orbit-cosmos/orbit-blockchain/consensus"
+	"github.com/orbit-cosmos/orbit-blockchain/consensus/ethash"
+	"github.com/orbit-cosmos/orbit-blockchain/core/rawdb"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/core/vm"
+	"github.com/orbit-cosmos/orbit-blockchain/ethdb"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
 )
 
 // snapshotTestBasic wraps the common testing fields in the snapshot tests.

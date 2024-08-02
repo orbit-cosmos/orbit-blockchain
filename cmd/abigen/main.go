@@ -24,12 +24,12 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common/compiler"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/orbit-cosmos/orbit-blockchain/accounts/abi/bind"
+	"github.com/orbit-cosmos/orbit-blockchain/cmd/utils"
+	"github.com/orbit-cosmos/orbit-blockchain/common/compiler"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/flags"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
 	"github.com/urfave/cli/v2"
 )
 

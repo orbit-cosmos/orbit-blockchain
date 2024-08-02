@@ -19,8 +19,8 @@
 package rawdb
 
 import (
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/ethdb/pebble"
+	"github.com/orbit-cosmos/orbit-blockchain/ethdb"
+	"github.com/orbit-cosmos/orbit-blockchain/ethdb/pebble"
 )
 
 // Pebble is unsuported on 32bit architecture

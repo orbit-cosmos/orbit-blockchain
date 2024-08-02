@@ -19,9 +19,9 @@ package vm
 import (
 	"errors"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common/math"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
 )
 
 // memoryGasCost calculates the quadratic gas for memory expansion. It does so

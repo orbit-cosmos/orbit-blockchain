@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
 )
 
 // LegacyTx is the transaction data of the original Ethereum transactions.

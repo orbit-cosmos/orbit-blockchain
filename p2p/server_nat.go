@@ -20,10 +20,10 @@ import (
 	"net"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common/mclock"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/enr"
-	"github.com/ethereum/go-ethereum/p2p/nat"
+	"github.com/orbit-cosmos/orbit-blockchain/common/mclock"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enr"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/nat"
 )
 
 const (

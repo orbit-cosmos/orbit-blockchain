@@ -22,7 +22,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
 )
 
 const MetadataApi = "rpc"

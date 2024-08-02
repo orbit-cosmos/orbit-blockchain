@@ -24,12 +24,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/eth/filters"
-	"github.com/ethereum/go-ethereum/internal/ethapi"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/graph-gophers/graphql-go"
 	gqlErrors "github.com/graph-gophers/graphql-go/errors"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/filters"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/ethapi"
+	"github.com/orbit-cosmos/orbit-blockchain/node"
+	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 )
 
 type handler struct {

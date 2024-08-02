@@ -27,12 +27,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/internal/testlog"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover/v5wire"
-	"github.com/ethereum/go-ethereum/p2p/enode"
-	"github.com/ethereum/go-ethereum/p2p/enr"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/testlog"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/discover/v5wire"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enode"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enr"
+	"github.com/orbit-cosmos/orbit-blockchain/rlp"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/exp/slices"
 )

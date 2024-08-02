@@ -21,11 +21,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/ethconfig"
-	"github.com/ethereum/go-ethereum/internal/utesting"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/orbit-cosmos/orbit-blockchain/eth"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/ethconfig"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/utesting"
+	"github.com/orbit-cosmos/orbit-blockchain/node"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p"
 )
 
 var (

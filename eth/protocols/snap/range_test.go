@@ -19,7 +19,7 @@ package snap
 import (
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
 )
 
 // Tests that given a starting hash and a density, the hash ranger can correctly

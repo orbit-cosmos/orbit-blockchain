@@ -26,12 +26,12 @@ import (
 	"time"
 
 	"github.com/dop251/goja"
-	"github.com/ethereum/go-ethereum/accounts/scwallet"
-	"github.com/ethereum/go-ethereum/accounts/usbwallet"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/internal/jsre"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/orbit-cosmos/orbit-blockchain/accounts/scwallet"
+	"github.com/orbit-cosmos/orbit-blockchain/accounts/usbwallet"
+	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"
+	"github.com/orbit-cosmos/orbit-blockchain/console/prompt"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/jsre"
+	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 )
 
 // bridge is a collection of JavaScript utility methods to bride the .js runtime

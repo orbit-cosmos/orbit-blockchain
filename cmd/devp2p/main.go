@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/p2p/enode"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/debug"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/flags"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/enode"
 	"github.com/urfave/cli/v2"
 )
 

@@ -10,17 +10,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/rawdb"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/tests"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"
+	"github.com/orbit-cosmos/orbit-blockchain/core"
+	"github.com/orbit-cosmos/orbit-blockchain/core/rawdb"
+	"github.com/orbit-cosmos/orbit-blockchain/core/types"
+	"github.com/orbit-cosmos/orbit-blockchain/core/vm"
+	"github.com/orbit-cosmos/orbit-blockchain/rlp"
+	"github.com/orbit-cosmos/orbit-blockchain/tests"
 
 	// Force-load the native, to trigger registration
-	"github.com/ethereum/go-ethereum/eth/tracers"
+	"github.com/orbit-cosmos/orbit-blockchain/eth/tracers"
 )
 
 // flatCallTrace is the result of a callTracerParity run.

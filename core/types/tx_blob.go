@@ -21,11 +21,11 @@ import (
 	"crypto/sha256"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto/kzg4844"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/holiman/uint256"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto/kzg4844"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
+	"github.com/orbit-cosmos/orbit-blockchain/rlp"
 )
 
 // BlobTx represents an EIP-4844 transaction.

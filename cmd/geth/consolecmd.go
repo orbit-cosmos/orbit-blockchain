@@ -20,9 +20,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/console"
-	"github.com/ethereum/go-ethereum/internal/flags"
+	"github.com/orbit-cosmos/orbit-blockchain/cmd/utils"
+	"github.com/orbit-cosmos/orbit-blockchain/console"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/flags"
 	"github.com/urfave/cli/v2"
 )
 

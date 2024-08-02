@@ -21,10 +21,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ethereum/go-ethereum/cmd/devp2p/internal/v5test"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/internal/flags"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/orbit-cosmos/orbit-blockchain/cmd/devp2p/internal/v5test"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/flags"
+	"github.com/orbit-cosmos/orbit-blockchain/p2p/discover"
 	"github.com/urfave/cli/v2"
 )
 

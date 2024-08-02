@@ -23,14 +23,14 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/blake2b"
-	"github.com/ethereum/go-ethereum/crypto/bls12381"
-	"github.com/ethereum/go-ethereum/crypto/bn256"
-	"github.com/ethereum/go-ethereum/crypto/kzg4844"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common/math"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto/blake2b"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto/bls12381"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto/bn256"
+	"github.com/orbit-cosmos/orbit-blockchain/crypto/kzg4844"
+	"github.com/orbit-cosmos/orbit-blockchain/params"
 	"golang.org/x/crypto/ripemd160"
 )
 

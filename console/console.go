@@ -30,13 +30,13 @@ import (
 	"syscall"
 
 	"github.com/dop251/goja"
-	"github.com/ethereum/go-ethereum/console/prompt"
-	"github.com/ethereum/go-ethereum/internal/jsre"
-	"github.com/ethereum/go-ethereum/internal/jsre/deps"
-	"github.com/ethereum/go-ethereum/internal/web3ext"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/mattn/go-colorable"
+	"github.com/orbit-cosmos/orbit-blockchain/console/prompt"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/jsre"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/jsre/deps"
+	"github.com/orbit-cosmos/orbit-blockchain/internal/web3ext"
+	"github.com/orbit-cosmos/orbit-blockchain/log"
+	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 	"github.com/peterh/liner"
 )
 

@@ -16,7 +16,7 @@
 
 package downloader
 
-import "github.com/ethereum/go-ethereum/core/types"
+import "github.com/orbit-cosmos/orbit-blockchain/core/types"
 
 type DoneEvent struct {
 	Latest *types.Header

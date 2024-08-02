@@ -25,7 +25,7 @@ package blocktest
 import (
 	"hash"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/orbit-cosmos/orbit-blockchain/common"
 	"golang.org/x/crypto/sha3"
 )
 

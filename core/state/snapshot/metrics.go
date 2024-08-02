@@ -16,7 +16,7 @@
 
 package snapshot
 
-import "github.com/ethereum/go-ethereum/metrics"
+import "github.com/orbit-cosmos/orbit-blockchain/metrics"
 
 // Metrics in generation
 var (
