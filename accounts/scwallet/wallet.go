@@ -33,8 +33,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
 	pcsc "github.com/gballet/go-libpcsclite"
+	ethereum "github.com/orbit-cosmos/orbit-blockchain"
 	"github.com/orbit-cosmos/orbit-blockchain/accounts"
 	"github.com/orbit-cosmos/orbit-blockchain/common"
 	"github.com/orbit-cosmos/orbit-blockchain/core/types"

@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum"
+	ethereum "github.com/orbit-cosmos/orbit-blockchain"
 	"github.com/orbit-cosmos/orbit-blockchain/common"
 	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"
 	"github.com/orbit-cosmos/orbit-blockchain/core/types"
