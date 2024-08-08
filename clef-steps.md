@@ -14,10 +14,10 @@
 
 2. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn setpw 0xB02aDdbbc1fCACd3abB30513A3E552f6469EE7D4   `
 
-3. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn`
-4. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn --rules ./rules.js`
-5. ``clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn  attest  `sha256sum rules.js | cut -f1`
+3. ``clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn  attest  `sha256sum rules.js | cut -f1`
 ``
+4. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn --rules ./rules.js`
+
 
 
 ## run bootnode
@@ -26,12 +26,12 @@
 
 
 ## start node1 as miner
- `./build/bin/geth --bootnodes enode://f8a176b9bc1c75759762802db9e9a82e13e2ee631bc833e8b9c728cde00f1dfd284a6c7954909382fd4c9cad42a0274073b74de26e2efd1ceaa5ae6bd9700f44@192.168.18.39:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30304  --authrpc.port 8551 --miner.etherbase=0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 --mine --unlock 0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 -allow-insecure-unlock `
+ `./build/bin/geth --bootnodes enode://0670b8ff1b596a7bddf0e03b1afe6e8d423057591cb58b400c86a77b55e929441d894394269609ad7a1ff8526a7ad53e99b9ef560255b3313c1aaf2631cd7127@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30304  --authrpc.port 8551 --miner.etherbase=0xb420ea2c43acabba17881e49957731b53fc2a5fd --mine --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock `
 
 
 
 ## start node2
- `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock`
+ `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --unlock 0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 -allow-insecure-unlock`
 
 
 ## connect to geth JavaScript console
