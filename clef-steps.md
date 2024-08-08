@@ -39,7 +39,7 @@
 
 
 ## send tx
-`eth.sendTransaction({from:eth.accounts[0],to:"0xFD01A2868caACaceB32636fa8A7391f732689Ef9",value:wev3.toWei("50000000000")})`
+`eth.sendTransaction({from:eth.accounts[0],to:"0xFD01A2868caACaceB32636fa8A7391f732689Ef9",value:web3.toWei("50000000000")})`
 ## check balance
 `web3.fromWei(eth.getBalance("0xb420eA2C43AcabbA17881E49957731B53fc2a5fd"))`
 
