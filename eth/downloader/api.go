@@ -20,7 +20,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/ethereum/go-ethereum"
+	ethereum "github.com/orbit-cosmos/orbit-blockchain"
 	"github.com/orbit-cosmos/orbit-blockchain/event"
 	"github.com/orbit-cosmos/orbit-blockchain/rpc"
 )

@@ -29,8 +29,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum"
 	"github.com/holiman/uint256"
+	ethereum "github.com/orbit-cosmos/orbit-blockchain"
 	"github.com/orbit-cosmos/orbit-blockchain/accounts"
 	"github.com/orbit-cosmos/orbit-blockchain/common"
 	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"

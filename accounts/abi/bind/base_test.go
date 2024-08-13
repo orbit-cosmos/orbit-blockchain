@@ -24,7 +24,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum"
+	ethereum "github.com/orbit-cosmos/orbit-blockchain"
 	"github.com/orbit-cosmos/orbit-blockchain/accounts/abi"
 	"github.com/orbit-cosmos/orbit-blockchain/accounts/abi/bind"
 	"github.com/orbit-cosmos/orbit-blockchain/common"
