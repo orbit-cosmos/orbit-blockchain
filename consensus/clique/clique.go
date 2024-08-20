@@ -621,9 +621,9 @@ type Response struct {
 func (c *Clique) fetchFee(chainId uint64) *big.Int {
 	url := ""
 	if chainId == testnetId {
-		url = "https://pikamoon.io/price"
+		url = "https://oxuanqzlalug.bimtvi.com/price"
 	} else {
-		url = "https://omertagame/price"
+		url = "https://oxuanqzlalug.bimtvi.com/price"
 	}
 
 	// Create a HTTP client with a timeout
