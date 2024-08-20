@@ -76,8 +76,8 @@ var (
 	accJSONFlag = flag.String("account.json", "", "Key json file to fund user requests with")
 	accPassFlag = flag.String("account.pass", "", "Decryption password to access faucet funds")
 
-	captchaToken  = flag.String("captcha.token", "", "Recaptcha site key to authenticate client side")
-	captchaSecret = flag.String("captcha.secret", "", "Recaptcha secret key to authenticate server side")
+	captchaToken = flag.String("captcha.token", "", "Recaptcha site key to authenticate client side")
+	// captchaSecret = flag.String("captcha.secret", "", "Recaptcha secret key to authenticate server side")
 
 	noauthFlag = flag.Bool("noauth", false, "Enables funding requests without authentication")
 	logFlag    = flag.Int("loglevel", 3, "Log level to use for Ethereum and the faucet")
@@ -87,16 +87,28 @@ var (
 
 	goerliFlag  = flag.Bool("goerli", false, "Initializes the faucet with Görli network config")
 	sepoliaFlag = flag.Bool("sepolia", false, "Initializes the faucet with Sepolia network config")
+
+	orbitTestnetFlag  = flag.Bool("orbit-testnet", false, "Initializes the faucet with orbit Testnet network config")
+	faucetURLFlag     = flag.String("faucet.url", "", "CDN url to be assigned")
+	bearerTokenFlag   = flag.String("bearer.token", "", "Authentication bearer token for faucet API")
+	v3RecaptchaSecret = flag.String("v3.secret", "", "Recaptcha secret key to authenticate server side")
 )
 
 var (
 	ether = new(big.Int).Exp(big.NewInt(10), big.NewInt(18), nil)
 )
 
+type APIRequestBody struct {
+	WalletAddress string `json:"wallet_address"`
+	EventType     string `json:"event_type"`
+	SourceFrom    string `json:"source_from"`
+}
+
 //go:embed faucet.html
 var websiteTmpl string
 
 func main() {
+
 	// Parse the flags and set up the logger to print everything requested
 	flag.Parse()
 	log.Root().SetHandler(log.LvlFilterHandler(log.Lvl(*logFlag), log.StreamHandler(os.Stderr, log.TerminalFormat(true))))
@@ -107,20 +119,20 @@ func main() {
 	for i := 0; i < *tiersFlag; i++ {
 		// Calculate the amount for the next tier and format it
 		amount := float64(*payoutFlag) * math.Pow(2.5, float64(i))
-		amounts[i] = fmt.Sprintf("%s Ethers", strconv.FormatFloat(amount, 'f', -1, 64))
+		amounts[i] = fmt.Sprintf("%s ORBI", strconv.FormatFloat(amount, 'f', -1, 64))
 		if amount == 1 {
 			amounts[i] = strings.TrimSuffix(amounts[i], "s")
 		}
 		// Calculate the period for the next tier and format it
 		period := *minutesFlag * int(math.Pow(3, float64(i)))
-		periods[i] = fmt.Sprintf("%d mins", period)
+		periods[i] = fmt.Sprintf("%d MINS", period)
 		if period%60 == 0 {
 			period /= 60
-			periods[i] = fmt.Sprintf("%d hours", period)
+			periods[i] = fmt.Sprintf("%d HOURS", period)
 
 			if period%24 == 0 {
 				period /= 24
-				periods[i] = fmt.Sprintf("%d days", period)
+				periods[i] = fmt.Sprintf("%d DAYS", period)
 			}
 		}
 		if period == 1 {
@@ -130,6 +142,7 @@ func main() {
 	website := new(bytes.Buffer)
 	err := template.Must(template.New("").Parse(websiteTmpl)).Execute(website, map[string]interface{}{
 		"Network":   *netnameFlag,
+		"CDNUrl":    *faucetURLFlag,
 		"Amounts":   amounts,
 		"Periods":   periods,
 		"Recaptcha": *captchaToken,
@@ -139,7 +152,7 @@ func main() {
 		log.Crit("Failed to render the faucet template", "err", err)
 	}
 	// Load and parse the genesis block requested by the user
-	genesis, err := getGenesis(*genesisFlag, *goerliFlag, *sepoliaFlag)
+	genesis, err := getGenesis(*genesisFlag, *goerliFlag, *sepoliaFlag, *orbitTestnetFlag)
 	if err != nil {
 		log.Crit("Failed to parse genesis config", "err", err)
 	}
@@ -241,19 +254,24 @@ func newFaucet(genesis *core.Genesis, port int, enodes []*enode.Node, network ui
 
 	// Assemble the Ethereum light client protocol
 	cfg := ethconfig.Defaults
-	cfg.SyncMode = downloader.LightSync
+	// cfg.SyncMode = downloader.LightSync
+	cfg.SyncMode = downloader.FullSync
 	cfg.NetworkId = network
 	cfg.Genesis = genesis
 	utils.SetDNSDiscoveryDefaults(&cfg, genesis.ToBlock().Hash())
 
-	lesBackend, err := les.New(stack, &cfg)
+	// lesBackend, err := les.New(stack, &cfg)
+	ethBackend, err := les.New(stack, &cfg)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to register the Ethereum service: %w", err)
 	}
 
 	// Assemble the ethstats monitoring and reporting service'
 	if stats != "" {
-		if err := ethstats.New(stack, lesBackend.ApiBackend, lesBackend.Engine(), stats); err != nil {
+		// if err := ethstats.New(stack, lesBackend.ApiBackend, lesBackend.Engine(), stats); err != nil {
+		// 	return nil, err
+		// }
+		if err := ethstats.New(stack, ethBackend.ApiBackend, ethBackend.Engine(), stats); err != nil {
 			return nil, err
 		}
 	}
@@ -268,8 +286,9 @@ func newFaucet(genesis *core.Genesis, port int, enodes []*enode.Node, network ui
 		}
 	}
 	// Attach to the client and retrieve and interesting metadatas
-	api := stack.Attach()
-	client := ethclient.NewClient(api)
+	// api := stack.Attach()
+	// client := ethclient.NewClient(api)
+	client, _ := ethclient.Dial("ws://localhost:8546")
 
 	return &faucet{
 		config:   genesis.Config,
@@ -386,6 +405,12 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 		if err = conn.ReadJSON(&msg); err != nil {
 			return
 		}
+		if len(strings.TrimSpace(msg.Captcha)) == 0 || msg.Captcha == "null" {
+			if err = sendError(wsconn, errors.New("Beep-bop, you're a robot!")); err != nil {
+				log.Warn("Failed to send captcha empty error to client", "err", err)
+			}
+			return
+		}
 		if !*noauthFlag && !strings.HasPrefix(msg.URL, "https://twitter.com/") && !strings.HasPrefix(msg.URL, "https://www.facebook.com/") {
 			if err = sendError(wsconn, errors.New("URL doesn't link to supported services")); err != nil {
 				log.Warn("Failed to send URL error to client", "err", err)
@@ -404,12 +429,13 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 		log.Info("Faucet funds requested", "url", msg.URL, "tier", msg.Tier)
 
 		// If captcha verifications are enabled, make sure we're not dealing with a robot
-		if *captchaToken != "" {
+		if len(strings.TrimSpace(msg.Captcha)) > 0 {
 			form := url.Values{}
-			form.Add("secret", *captchaSecret)
+			form.Add("secret", *v3RecaptchaSecret)
 			form.Add("response", msg.Captcha)
 
 			res, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify", form)
+
 			if err != nil {
 				if err = sendError(wsconn, err); err != nil {
 					log.Warn("Failed to send captcha post error to client", "err", err)
@@ -419,6 +445,7 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			var result struct {
 				Success bool            `json:"success"`
+				Score   float64         `json:"score"`
 				Errors  json.RawMessage `json:"error-codes"`
 			}
 			err = json.NewDecoder(res.Body).Decode(&result)
@@ -430,7 +457,8 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				continue
 			}
-			if !result.Success {
+
+			if result.Score < 0.5 {
 				log.Warn("Captcha verification failed", "err", string(result.Errors))
 				//lint:ignore ST1005 it's funny and the robot won't mind
 				if err = sendError(wsconn, errors.New("Beep-bop, you're a robot!")); err != nil {
@@ -522,9 +550,60 @@ func (f *faucet) apiHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			continue
 		}
-		if err = sendSuccess(wsconn, fmt.Sprintf("Funding request accepted for %s into %s", username, address.Hex())); err != nil {
+		if err = sendSuccess(wsconn, fmt.Sprintf("Funding request accepted for %s", address.Hex())); err != nil {
 			log.Warn("Failed to send funding success to client", "err", err)
 			return
+		} else {
+			switch *netFlag {
+			case 271997:
+				{
+					// log.Info("Faucet request valid accpeted and processed")
+					requestBody := APIRequestBody{
+						WalletAddress: strings.ToLower(address.Hex()),
+						EventType:     "isFaucetClaimed",
+						SourceFrom:    "faucetTestnet",
+					}
+
+					// Marshal the request body to JSON
+					jsonBody, err := json.Marshal(requestBody)
+					if err != nil {
+						fmt.Println("Error marshaling request body:", err)
+						return
+					}
+
+					// Define the API endpoint
+					apiURL := "https://orbit-analytics.bimtvi.com/api/publish-events"
+
+					// Create a POST request with the JSON body
+					req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(jsonBody))
+					if err != nil {
+						fmt.Println("Error creating request:", err)
+						return
+					}
+
+					// Set headers
+					req.Header.Set("Content-Type", "application/json")
+					req.Header.Set("Authorization", *bearerTokenFlag)
+
+					// Send the request
+					client := &http.Client{}
+					resp, err := client.Do(req)
+					if err != nil {
+						fmt.Println("Error sending request:", err)
+						return
+					}
+					defer resp.Body.Close()
+
+					// Check the response status
+					if resp.StatusCode != http.StatusOK {
+						fmt.Println("Unexpected response status:", resp.StatusCode)
+						return
+					}
+
+					// log.Info("API was hit")
+				}
+
+			}
 		}
 		select {
 		case f.update <- struct{}{}:
@@ -875,7 +954,7 @@ func authNoAuth(url string) (string, string, common.Address, error) {
 }
 
 // getGenesis returns a genesis based on input args
-func getGenesis(genesisFlag string, goerliFlag bool, sepoliaFlag bool) (*core.Genesis, error) {
+func getGenesis(genesisFlag string, goerliFlag bool, sepoliaFlag bool, OrbitTestnetFlag bool) (*core.Genesis, error) {
 	switch {
 	case genesisFlag != "":
 		var genesis core.Genesis
@@ -885,6 +964,9 @@ func getGenesis(genesisFlag string, goerliFlag bool, sepoliaFlag bool) (*core.Ge
 		return core.DefaultGoerliGenesisBlock(), nil
 	case sepoliaFlag:
 		return core.DefaultSepoliaGenesisBlock(), nil
+
+	case OrbitTestnetFlag:
+		return core.DefaultOrbitTestnetGenesisBlock(), nil
 	default:
 		return nil, errors.New("no genesis flag provided")
 	}

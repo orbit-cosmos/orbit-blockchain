@@ -27,6 +27,10 @@ import (
 	"sync"
 	"time"
 
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/orbit-cosmos/orbit-blockchain/accounts"
 	"github.com/orbit-cosmos/orbit-blockchain/common"
 	"github.com/orbit-cosmos/orbit-blockchain/common/hexutil"
@@ -52,6 +56,7 @@ const (
 	inmemorySignatures = 4096 // Number of recent block signatures to keep in memory
 
 	wiggleTime = 500 * time.Millisecond // Random delay (per signer) to allow concurrent signers
+	testnetId  = 271997
 )
 
 // Clique proof-of-authority protocol constants.
@@ -68,6 +73,8 @@ var (
 
 	diffInTurn = big.NewInt(2) // Block difficulty for in-turn signatures
 	diffNoTurn = big.NewInt(1) // Block difficulty for out-of-turn signatures
+
+	blockInterval = uint64(100)
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -532,6 +539,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 
 	// Copy signer protected by mutex to avoid race condition
 	signer := c.signer
+	header.Signer = signer
 	c.lock.RUnlock()
 
 	// Set the correct difficulty
@@ -562,6 +570,33 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 	if header.Time < uint64(time.Now().Unix()) {
 		header.Time = uint64(time.Now().Unix())
 	}
+
+	header.VSigners = []common.Address{}
+	header.Votes = 0
+	header.ProposedFee = new(big.Int)
+
+	header.FeePerTx = parent.FeePerTx
+	chainRef := chain.Config().ChainID.Uint64()
+
+	if c.feeInterval(number) {
+		fetchedFee := c.fetchFee(chainRef)
+
+		if fetchedFee != nil {
+			header.FeePerTx = fetchedFee
+		}
+	} else {
+		if number > blockInterval {
+			prevIntervalBlockHeader := chain.GetHeaderByNumber(parent.Number.Uint64() - blockInterval)
+
+			if parent.FeePerTx.Cmp(prevIntervalBlockHeader.FeePerTx) == 0 {
+				fetchedFee := c.fetchFee(chainRef)
+
+				if fetchedFee != nil {
+					header.FeePerTx = fetchedFee
+				}
+			}
+		}
+	}
 	return nil
 }
 
@@ -569,6 +604,64 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 // consensus rules in clique, do nothing here.
 func (c *Clique) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, withdrawals []*types.Withdrawal) {
 	// No block rewards in PoA, so the state remains as is
+}
+
+func (c *Clique) feeInterval(blockNumber uint64) bool {
+	if blockNumber < blockInterval {
+		return false
+	} else {
+		return (blockNumber-1)%blockInterval == 0
+	}
+}
+
+type Response struct {
+	Value int64 `json:"value"`
+}
+
+func (c *Clique) fetchFee(chainId uint64) *big.Int {
+	url := ""
+	if chainId == testnetId {
+		url = "https://pikamoon.io/price"
+	} else {
+		url = "https://omertagame/price"
+	}
+
+	// Create a HTTP client with a timeout
+	client := &http.Client{
+		Timeout: 1 * time.Second,
+	}
+	startTime := time.Now()
+	resp, err := client.Get(url)
+	responseTime := time.Since(startTime)
+
+	if err != nil {
+		log.Warn("Failed to fetch the value: ", "error", err)
+		return nil
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		log.Warn("Received non-200 status code: ", "error", resp.StatusCode)
+		return nil
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Warn("Failed to read the response body: ", "error", err)
+		return nil
+	}
+
+	var result Response
+	err = json.Unmarshal(body, &result)
+	if err != nil {
+		log.Warn("Failed to unmarshal the response: ", "error", err)
+		return nil
+	}
+
+	valueBigInt := new(big.Int).SetInt64(result.Value)
+	fmt.Printf("Response Time: %v\n", responseTime)
+
+	return valueBigInt
 }
 
 // FinalizeAndAssemble implements consensus.Engine, ensuring no uncles are set,

@@ -47,6 +47,16 @@ var SepoliaBootnodes = []string{
 	"enode://9e9492e2e8836114cc75f5b929784f4f46c324ad01daf87d956f98b3b6c5fcba95524d6e5cf9861dc96a2c8a171ea7105bb554a197455058de185fa870970c7c@138.68.123.152:30303", // sepolia-bootnode-1-ams3
 }
 
+var OrbitTestnetBootnodes = []string{
+	"enode://7d92f1024395e6b6edba64683b221f93bd63dc84eaddddfbe9a2a80908cc2106dd081e729e94cd7bbb371467e344c15dd82b22cb8de364a26b1befbd17c32814@bootnode1.bimtvi.com:30311",
+	"enode://70424047d5647192eec5bc1ca4a79a998ca7ecdb30d711695063e8e4be7bc38136644678781ce462ac57cada35edc31d701865e4f7a9877059264a4a195dc7c9@bootnode2.bimtvi.com:30311",
+}
+
+var OrbitMainnetBootnodes = []string{
+	"enode://7d92f1024395e6b6edba64683b221f93bd63dc84eaddddfbe9a2a80908cc2106dd081e729e94cd7bbb371467e344c15dd82b22cb8de364a26b1befbd17c32814@bootnode1.bimtvi.com:30311",
+	"enode://70424047d5647192eec5bc1ca4a79a998ca7ecdb30d711695063e8e4be7bc38136644678781ce462ac57cada35edc31d701865e4f7a9877059264a4a195dc7c9@bootnode2.bimtvi.com:30311",
+}
+
 // GoerliBootnodes are the enode URLs of the P2P bootstrap nodes running on the
 // Görli test network.
 var GoerliBootnodes = []string{
@@ -98,6 +108,11 @@ func KnownDNSNetwork(genesis common.Hash, protocol string) string {
 		net = "sepolia"
 	case HoleskyGenesisHash:
 		net = "holesky"
+
+	case OrbitTestnetGenesisHash:
+		net = "orbit-testnet"
+	case OrbitMainnetGenesisHash:
+		net = "orbit-mainnet"
 	default:
 		return ""
 	}

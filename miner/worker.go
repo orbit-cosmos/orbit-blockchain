@@ -1107,7 +1107,7 @@ func (w *worker) commit(env *environment, interval func(), update bool, start ti
 			interval()
 		}
 		// Create a local environment copy, avoid the data race with snapshot state.
-		// https://github.com/orbit-cosmos/orbit-blockchain/issues/24299
+		// https://github.com/TerraVirtuaCo/orbitchain-blockchain/issues/24299
 		env := env.copy()
 		// Withdrawals are set to nil here, because this is only called in PoW.
 		block, err := w.engine.FinalizeAndAssemble(w.chain, env.header, env.state, env.txs, nil, env.receipts, nil)
@@ -1171,11 +1171,18 @@ func copyReceipts(receipts []*types.Receipt) []*types.Receipt {
 // totalFees computes total consumed miner fees in Wei. Block transactions and receipts have to have the same order.
 func totalFees(block *types.Block, receipts []*types.Receipt) *big.Int {
 	feesWei := new(big.Int)
+
+	blockFee := new(big.Int)
+	feePerTransaction := block.Header().FeePerTx
+
 	for i, tx := range block.Transactions() {
 		minerFee, _ := tx.EffectiveGasTip(block.BaseFee())
 		feesWei.Add(feesWei, new(big.Int).Mul(new(big.Int).SetUint64(receipts[i].GasUsed), minerFee))
+
+		blockFee.Add(blockFee, feePerTransaction)
 	}
-	return feesWei
+	// return feesWei
+	return blockFee
 }
 
 // signalToErr converts the interruption signal to a concrete error type for return.

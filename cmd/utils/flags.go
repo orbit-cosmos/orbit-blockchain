@@ -160,6 +160,17 @@ var (
 		Usage:    "Holesky network: pre-configured proof-of-stake test network",
 		Category: flags.EthCategory,
 	}
+
+	OrbitMainnetFlag = &cli.BoolFlag{
+		Name:     "orbit mainnet",
+		Usage:    "mainnet network: pre-configured proof-of-authority mainnet network",
+		Category: flags.EthCategory,
+	}
+	OrbitTestnetFlag = &cli.BoolFlag{
+		Name:     "orbit testnet",
+		Usage:    "Testnet network: pre-configured proof-of-authority test network",
+		Category: flags.EthCategory,
+	}
 	// Dev mode
 	DeveloperFlag = &cli.BoolFlag{
 		Name:     "dev",
@@ -957,6 +968,7 @@ var (
 		GoerliFlag,
 		SepoliaFlag,
 		HoleskyFlag,
+		OrbitTestnetFlag,
 	}
 	// NetworkFlags is the flag group of all built-in supported networks.
 	NetworkFlags = append([]cli.Flag{MainnetFlag}, TestnetFlags...)
@@ -990,6 +1002,12 @@ func MakeDataDir(ctx *cli.Context) string {
 		}
 		if ctx.Bool(HoleskyFlag.Name) {
 			return filepath.Join(path, "holesky")
+		}
+		if ctx.Bool(OrbitTestnetFlag.Name) {
+			return filepath.Join(path, "orbit_testnet")
+		}
+		if ctx.Bool(OrbitMainnetFlag.Name) {
+			return filepath.Join(path, "orbit_mainnet")
 		}
 		return path
 	}
@@ -1053,6 +1071,11 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 			urls = params.SepoliaBootnodes
 		case ctx.Bool(GoerliFlag.Name):
 			urls = params.GoerliBootnodes
+		case ctx.Bool(OrbitMainnetFlag.Name):
+			urls = params.OrbitMainnetBootnodes
+		case ctx.Bool(OrbitTestnetFlag.Name):
+			urls = params.OrbitTestnetBootnodes
+
 		}
 	}
 	cfg.BootstrapNodes = mustParseBootnodes(urls)
@@ -1503,7 +1526,12 @@ func SetDataDir(ctx *cli.Context, cfg *node.Config) {
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "sepolia")
 	case ctx.Bool(HoleskyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "holesky")
+	case ctx.Bool(OrbitTestnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+
+	case ctx.Bool(OrbitMainnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "testnet")
 	}
+
 }
 
 func setGPO(ctx *cli.Context, cfg *gasprice.Config, light bool) {
@@ -1659,7 +1687,7 @@ func CheckExclusive(ctx *cli.Context, args ...interface{}) {
 // SetEthConfig applies eth-related command line flags to the config.
 func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	// Avoid conflicting network flags
-	CheckExclusive(ctx, MainnetFlag, DeveloperFlag, GoerliFlag, SepoliaFlag, HoleskyFlag)
+	CheckExclusive(ctx, MainnetFlag, DeveloperFlag, GoerliFlag, SepoliaFlag, HoleskyFlag, OrbitTestnetFlag, OrbitMainnetFlag)
 	CheckExclusive(ctx, LightServeFlag, SyncModeFlag, "light")
 	CheckExclusive(ctx, DeveloperFlag, ExternalSignerFlag) // Can't use both ephemeral unlocked and external signer
 
@@ -1830,6 +1858,18 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		}
 		cfg.Genesis = core.DefaultGoerliGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.GoerliGenesisHash)
+	case ctx.Bool(OrbitTestnetFlag.Name):
+		if !ctx.IsSet(NetworkIdFlag.Name) {
+			cfg.NetworkId = 1947
+		}
+		cfg.Genesis = core.DefaultOrbitTestnetGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.OrbitTestnetGenesisHash)
+	case ctx.Bool(OrbitMainnetFlag.Name):
+		if !ctx.IsSet(NetworkIdFlag.Name) {
+			cfg.NetworkId = 1947
+		}
+		cfg.Genesis = core.DefaultOrbitMainnetGenesisBlock()
+		SetDNSDiscoveryDefaults(cfg, params.OrbitMainnetGenesisHash)
 	case ctx.Bool(DeveloperFlag.Name):
 		if !ctx.IsSet(NetworkIdFlag.Name) {
 			cfg.NetworkId = 1337
@@ -2156,6 +2196,10 @@ func MakeGenesis(ctx *cli.Context) *core.Genesis {
 		genesis = core.DefaultSepoliaGenesisBlock()
 	case ctx.Bool(GoerliFlag.Name):
 		genesis = core.DefaultGoerliGenesisBlock()
+	case ctx.Bool(OrbitTestnetFlag.Name):
+		genesis = core.DefaultOrbitTestnetGenesisBlock()
+	case ctx.Bool(OrbitMainnetFlag.Name):
+		genesis = core.DefaultOrbitMainnetGenesisBlock()
 	case ctx.Bool(DeveloperFlag.Name):
 		Fatalf("Developer chains are ephemeral")
 	}

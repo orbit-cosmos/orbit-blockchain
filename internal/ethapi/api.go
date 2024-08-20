@@ -515,7 +515,7 @@ func (s *PersonalAccountAPI) SignTransaction(ctx context.Context, args Transacti
 //
 // The key used to calculate the signature is decrypted with the given password.
 //
-// https://github.com/orbit-cosmos/orbit-blockchain/wiki/Management-APIs#personal_sign
+// https://github.com/TerraVirtuaCo/orbitchain-blockchain/wiki/Management-APIs#personal_sign
 func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr common.Address, passwd string) (hexutil.Bytes, error) {
 	// Look up the wallet containing the requested signer
 	account := accounts.Account{Address: addr}
@@ -543,7 +543,7 @@ func (s *PersonalAccountAPI) Sign(ctx context.Context, data hexutil.Bytes, addr 
 // Note, the signature must conform to the secp256k1 curve R, S and V values, where
 // the V value must be 27 or 28 for legacy reasons.
 //
-// https://github.com/orbit-cosmos/orbit-blockchain/wiki/Management-APIs#personal_ecRecover
+// https://github.com/TerraVirtuaCo/orbitchain-blockchain/wiki/Management-APIs#personal_ecRecover
 func (s *PersonalAccountAPI) EcRecover(ctx context.Context, data, sig hexutil.Bytes) (common.Address, error) {
 	if len(sig) != crypto.SignatureLength {
 		return common.Address{}, fmt.Errorf("signature must be %d bytes long", crypto.SignatureLength)
@@ -1196,8 +1196,9 @@ func executeEstimate(ctx context.Context, b Backend, args TransactionArgs, state
 func DoEstimateGas(ctx context.Context, b Backend, args TransactionArgs, blockNrOrHash rpc.BlockNumberOrHash, overrides *StateOverride, gasCap uint64) (hexutil.Uint64, error) {
 	// Binary search the gas limit, as it may need to be higher than the amount used
 	var (
-		lo uint64 // lowest-known gas limit where tx execution fails
-		hi uint64 // lowest-known gas limit where tx execution succeeds
+		lo    uint64 // lowest-known gas limit where tx execution fails
+		hi    uint64 // lowest-known gas limit where tx execution succeeds
+		limit uint64
 	)
 	// Use zero address if sender unspecified.
 	if args.From == nil {
@@ -1205,8 +1206,6 @@ func DoEstimateGas(ctx context.Context, b Backend, args TransactionArgs, blockNr
 	}
 	// Determine the highest gas limit can be used during the estimation.
 	if args.Gas != nil && uint64(*args.Gas) >= params.TxGas {
-		hi = uint64(*args.Gas)
-	} else {
 		// Retrieve the block to act as the gas ceiling
 		block, err := b.BlockByNumberOrHash(ctx, blockNrOrHash)
 		if err != nil {
@@ -1215,7 +1214,15 @@ func DoEstimateGas(ctx context.Context, b Backend, args TransactionArgs, blockNr
 		if block == nil {
 			return 0, errors.New("block not found")
 		}
-		hi = block.GasLimit()
+		limit = block.GasLimit()
+
+		if uint64(*args.Gas) <= limit {
+			hi = uint64(*args.Gas)
+		} else {
+			return 0, errors.New("gas exceeding limit")
+		}
+	} else {
+		hi = gasCap
 	}
 	// Normalize the max fee per gas the call is willing to spend.
 	var feeCap *big.Int
@@ -1263,7 +1270,7 @@ func DoEstimateGas(ctx context.Context, b Backend, args TransactionArgs, blockNr
 	// Recap the highest gas allowance with specified gascap.
 	if gasCap != 0 && hi > gasCap {
 		log.Warn("Caller gas above allowance, capping", "requested", hi, "cap", gasCap)
-		hi = gasCap
+		// hi = gasCap
 	}
 
 	// We first execute the transaction at the highest allowable gas limit, since if this fails we
@@ -1344,7 +1351,18 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 		"timestamp":        hexutil.Uint64(head.Time),
 		"transactionsRoot": head.TxHash,
 		"receiptsRoot":     head.ReceiptHash,
+		"signer":           head.Signer,
+		"feePerTx":         head.FeePerTx,
+		"proposedFee":      head.ProposedFee,
+		"votes":            head.Votes,
+		"vSigners":         head.VSigners,
 	}
+	vSignersHex := []string{}
+	for _, vSigner := range head.VSigners {
+		vSignersHex = append(vSignersHex, vSigner.Hex())
+	}
+	result["vSigners"] = vSignersHex
+
 	if head.BaseFee != nil {
 		result["baseFeePerGas"] = (*hexutil.Big)(head.BaseFee)
 	}

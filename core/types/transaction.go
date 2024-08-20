@@ -211,6 +211,9 @@ func (tx *Transaction) decodeTyped(b []byte) (TxData, error) {
 
 // setDecoded sets the inner transaction and size after decoding.
 func (tx *Transaction) setDecoded(inner TxData, size uint64) {
+	if inner.value().Sign() < 0 {
+		panic("transaction value cannot be negative")
+	}
 	tx.inner = inner
 	tx.time = time.Now()
 	if size > 0 {
@@ -306,13 +309,42 @@ func (tx *Transaction) To() *common.Address {
 }
 
 // Cost returns (gas * gasPrice) + (blobGas * blobGasPrice) + value.
-func (tx *Transaction) Cost() *big.Int {
-	total := new(big.Int).Mul(tx.GasPrice(), new(big.Int).SetUint64(tx.Gas()))
+func (tx *Transaction) Cost(feePerTx big.Int) *big.Int {
+	// total := new(big.Int).Mul(tx.GasPrice(), new(big.Int).SetUint64(tx.Gas()))
+
+	total := new(big.Int).Set(&feePerTx)
+	feeMultiplier := tx.feeTiers(new(big.Int).SetUint64(tx.Gas()))
+	total.Mul(total, new(big.Int).SetUint64(feeMultiplier))
+
 	if tx.Type() == BlobTxType {
 		total.Add(total, new(big.Int).Mul(tx.BlobGasFeeCap(), new(big.Int).SetUint64(tx.BlobGas())))
 	}
 	total.Add(total, tx.Value())
 	return total
+}
+
+func (tx *Transaction) feeTiers(gas *big.Int) uint64 {
+	// Define the tier thresholds
+	tier1 := big.NewInt(12_000_000) // 12M
+	tier2 := big.NewInt(15_000_000) // 15M
+	tier3 := big.NewInt(20_000_000) // 20M
+	tier4 := big.NewInt(25_000_000) // 25M
+	tier5 := big.NewInt(30_000_000) // 30M
+
+	// Check the gas amount against the tier thresholds
+	if gas.Cmp(tier1) <= 0 {
+		return 1
+	} else if gas.Cmp(tier1) > 0 && gas.Cmp(tier2) <= 0 {
+		return 3000
+	} else if gas.Cmp(tier2) > 0 && gas.Cmp(tier3) <= 0 {
+		return 6000
+	} else if gas.Cmp(tier3) > 0 && gas.Cmp(tier4) <= 0 {
+		return 15000
+	} else if gas.Cmp(tier4) > 0 && gas.Cmp(tier5) <= 0 {
+		return 30000
+	}
+
+	return 60000
 }
 
 // RawSignatureValues returns the V, R, S signature values of the transaction.
