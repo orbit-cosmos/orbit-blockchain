@@ -577,7 +577,8 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 
 	header.FeePerTx = parent.FeePerTx
 	chainRef := chain.Config().ChainID.Uint64()
-
+	fmt.Printf("chain id  ----------->: %v\n", chainRef)
+	log.Info("chain id ---------------------> ", "", chainRef)
 	if c.feeInterval(number) {
 		fetchedFee := c.fetchFee(chainRef)
 
@@ -661,6 +662,8 @@ func (c *Clique) fetchFee(chainId uint64) *big.Int {
 	valueBigInt := new(big.Int).SetInt64(result.Value)
 	fmt.Printf("Response Time: %v\n", responseTime)
 
+	fmt.Printf("gas Price  ----------->: %v\n", valueBigInt)
+	log.Info("gas Price ---------------------> ", "", valueBigInt)
 	return valueBigInt
 }
 
