@@ -57,7 +57,6 @@ const (
 
 	wiggleTime = 500 * time.Millisecond // Random delay (per signer) to allow concurrent signers
 	testnetId  = 271997
-	mainnetId  = 281997
 )
 
 // Clique proof-of-authority protocol constants.
@@ -75,72 +74,7 @@ var (
 	diffInTurn = big.NewInt(2) // Block difficulty for in-turn signatures
 	diffNoTurn = big.NewInt(1) // Block difficulty for out-of-turn signatures
 
-	InitialBlockReward = big.NewInt(2e+18)
-	blockInterval      = uint64(100)
-
-	//////
-
-	RewardFinalizeBlock = uint64(203904000)
-	BlockReward         = big.NewInt(0)
-	BlockInFirstYear    = uint64(6912000)
-	BlocksInAYear       = uint64(10368000)
-	YearlyReward        = map[uint64]*big.Int{
-		1:  new(big.Int).SetUint64(15_059508873500000000),
-		2:  new(big.Int).SetUint64(10_129595196800000000),
-		3:  new(big.Int).SetUint64(6_813548804000000000),
-		4:  new(big.Int).SetUint64(4_583050540100000000),
-		5:  new(big.Int).SetUint64(3_082733217600000000),
-		6:  new(big.Int).SetUint64(2_073562789400000000),
-		7:  new(big.Int).SetUint64(1_394756751500000000),
-		8:  new(big.Int).SetUint64(938166184400000000),
-		9:  new(big.Int).SetUint64(631046006900000000),
-		10: new(big.Int).SetUint64(424465374200000000),
-		11: new(big.Int).SetUint64(285511477600000000),
-		12: new(big.Int).SetUint64(192045814000000000),
-		13: new(big.Int).SetUint64(129177276200000000),
-		14: new(big.Int).SetUint64(86889467600000000),
-		15: new(big.Int).SetUint64(58445216000000000),
-		16: new(big.Int).SetUint64(39312403500000000),
-		17: new(big.Int).SetUint64(26442901200000000),
-		18: new(big.Int).SetUint64(17786554800000000),
-		19: new(big.Int).SetUint64(11964409700000000),
-	}
-
-	BlocksInAMonth         = uint64(864000)
-	FirstYearMonthlyReward = map[uint64]*big.Int{
-		0: func() *big.Int {
-			val, _ := new(big.Int).SetString("57870370370400000000", 10)
-			return val
-		}(),
-		1: func() *big.Int {
-			val, _ := new(big.Int).SetString("219907407407400000000", 10)
-			return val
-		}(),
-		2: func() *big.Int {
-			val, _ := new(big.Int).SetString("104166666666700000000", 10)
-			return val
-		}(),
-		3: func() *big.Int {
-			val, _ := new(big.Int).SetString("92592592592600000000", 10)
-			return val
-		}(),
-		4: func() *big.Int {
-			val, _ := new(big.Int).SetString("34722222222200000000", 10)
-			return val
-		}(),
-		5: func() *big.Int {
-			val, _ := new(big.Int).SetString("23148148148100000000", 10)
-			return val
-		}(),
-		6: func() *big.Int {
-			val, _ := new(big.Int).SetString("23148148148100000000", 10)
-			return val
-		}(),
-		7: func() *big.Int {
-			val, _ := new(big.Int).SetString("16550925925900000000", 10)
-			return val
-		}(),
-	}
+	blockInterval = uint64(100)
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -644,7 +578,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 	header.FeePerTx = parent.FeePerTx
 	chainRef := chain.Config().ChainID.Uint64()
 	fmt.Printf("chain id  ----------->: %v\n", chainRef)
-	log.Info("chain id ---------------------> ", "chainId", chainRef)
+	log.Info("chain id ---------------------> ", "", chainRef)
 	if c.feeInterval(number) {
 		fetchedFee := c.fetchFee(chainRef)
 
@@ -670,24 +604,7 @@ func (c *Clique) Prepare(chain consensus.ChainHeaderReader, header *types.Header
 // Finalize implements consensus.Engine. There is no post-transaction
 // consensus rules in clique, do nothing here.
 func (c *Clique) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, withdrawals []*types.Withdrawal) {
-	currentBlockNumber := header.Number.Uint64()
-	rewardAddress := common.HexToAddress("0x8DE5B80a0C1B02Fe4976851D030B36122dbb8624")
-
-	if chain.Config().ChainID.Uint64() == testnetId {
-		state.AddBalance(rewardAddress, InitialBlockReward)
-	} else if chain.Config().ChainID.Uint64() == mainnetId {
-		if currentBlockNumber <= RewardFinalizeBlock {
-			if currentBlockNumber <= BlockInFirstYear {
-				Month := uint64((currentBlockNumber - 1) / BlocksInAMonth)
-				BlockReward = FirstYearMonthlyReward[Month]
-			} else {
-				currentYearOfReward := uint64((currentBlockNumber + (BlocksInAYear - BlockInFirstYear) - 1) / BlocksInAYear)
-				BlockReward = YearlyReward[currentYearOfReward]
-			}
-			state.AddBalance(rewardAddress, BlockReward)
-		}
-	}
-
+	// No block rewards in PoA, so the state remains as is
 }
 
 func (c *Clique) feeInterval(blockNumber uint64) bool {
