@@ -57,6 +57,7 @@ const (
 
 	wiggleTime = 500 * time.Millisecond // Random delay (per signer) to allow concurrent signers
 	testnetId  = 271997
+	mainnetId  = 1997
 )
 
 // Clique proof-of-authority protocol constants.
@@ -623,8 +624,11 @@ func (c *Clique) fetchFee(chainId uint64) *big.Int {
 	url := ""
 	if chainId == testnetId {
 		url = "https://oxuanqzlalug.bimtvi.com/price"
-	} else {
+	} else if chainId == mainnetId {
 		url = "https://oxuanqzlalug.bimtvi.com/price"
+	} else {
+		log.Warn("Unsupported chain ID: ", "chainId", chainId)
+		return nil
 	}
 
 	// Create a HTTP client with a timeout
