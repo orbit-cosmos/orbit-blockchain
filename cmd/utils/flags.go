@@ -162,12 +162,12 @@ var (
 	}
 
 	OrbitMainnetFlag = &cli.BoolFlag{
-		Name:     "orbit mainnet",
+		Name:     "orbit-mainnet",
 		Usage:    "mainnet network: pre-configured proof-of-authority mainnet network",
 		Category: flags.EthCategory,
 	}
 	OrbitTestnetFlag = &cli.BoolFlag{
-		Name:     "orbit testnet",
+		Name:     "orbit-testnet",
 		Usage:    "Testnet network: pre-configured proof-of-authority test network",
 		Category: flags.EthCategory,
 	}
@@ -971,7 +971,7 @@ var (
 		OrbitTestnetFlag,
 	}
 	// NetworkFlags is the flag group of all built-in supported networks.
-	NetworkFlags = append([]cli.Flag{MainnetFlag}, TestnetFlags...)
+	NetworkFlags = append([]cli.Flag{MainnetFlag, OrbitMainnetFlag}, TestnetFlags...)
 
 	// DatabaseFlags is the flag group of all database flags.
 	DatabaseFlags = []cli.Flag{
@@ -1004,10 +1004,10 @@ func MakeDataDir(ctx *cli.Context) string {
 			return filepath.Join(path, "holesky")
 		}
 		if ctx.Bool(OrbitTestnetFlag.Name) {
-			return filepath.Join(path, "orbit_testnet")
+			return filepath.Join(path, "orbit-testnet")
 		}
 		if ctx.Bool(OrbitMainnetFlag.Name) {
-			return filepath.Join(path, "orbit_mainnet")
+			return filepath.Join(path, "orbit-mainnet")
 		}
 		return path
 	}
@@ -1527,9 +1527,8 @@ func SetDataDir(ctx *cli.Context, cfg *node.Config) {
 	case ctx.Bool(HoleskyFlag.Name) && cfg.DataDir == node.DefaultDataDir():
 		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "holesky")
 	case ctx.Bool(OrbitTestnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
+		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "orbit-testnet")
 
-	case ctx.Bool(OrbitMainnetFlag.Name) && cfg.DataDir == node.DefaultDataDir():
-		cfg.DataDir = filepath.Join(node.DefaultDataDir(), "testnet")
 	}
 
 }
@@ -1860,13 +1859,13 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 		SetDNSDiscoveryDefaults(cfg, params.GoerliGenesisHash)
 	case ctx.Bool(OrbitTestnetFlag.Name):
 		if !ctx.IsSet(NetworkIdFlag.Name) {
-			cfg.NetworkId = 1947
+			cfg.NetworkId = 271997
 		}
 		cfg.Genesis = core.DefaultOrbitTestnetGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.OrbitTestnetGenesisHash)
 	case ctx.Bool(OrbitMainnetFlag.Name):
 		if !ctx.IsSet(NetworkIdFlag.Name) {
-			cfg.NetworkId = 1947
+			cfg.NetworkId = 1997
 		}
 		cfg.Genesis = core.DefaultOrbitMainnetGenesisBlock()
 		SetDNSDiscoveryDefaults(cfg, params.OrbitMainnetGenesisHash)
