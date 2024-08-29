@@ -89,7 +89,10 @@ All combined is 0x00000000000000000000000000000000000000000000000000000000000000
         "0xb420ea2c43acabba17881e49957731b53fc2a5fd": {
             "balance": "0x3635c9adc5dea00000"
         }
-    }
+    },
+     "feePerTx":"",
+    "proposedFee":"",
+    "votes":""
 }
 ```
 
@@ -123,13 +126,13 @@ HTTP based JSON-RPC API options:
 
 ## protact key using clef
 
-1. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn init`
+1. `clef --keystore ./node1/keystore --configdir ./clef-node1 --chainid 271997 --suppress-bootwarn init`
 
-2. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn setpw 0xB02aDdbbc1fCACd3abB30513A3E552f6469EE7D4   `
+2. `clef --keystore ./node1/keystore --configdir ./clef-node1 --chainid 271997 --suppress-bootwarn setpw 0xB02aDdbbc1fCACd3abB30513A3E552f6469EE7D4   `
 
-3. ``clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn  attest  `sha256sum rules.js | cut -f1`
+3. ``clef --keystore ./node1/keystore --configdir ./clef-node1 --chainid 271997 --suppress-bootwarn  attest  `sha256sum rules.js | cut -f1`
 ``
-4. `clef --keystore ./node1/keystore --configdir ./clef --chainid 271997 --suppress-bootwarn --rules ./rules.js`
+4. `clef --keystore ./node1/keystore --configdir ./clef-node1 --chainid 271997 --suppress-bootwarn --rules ./rules.js`
 
 
 

@@ -3,6 +3,8 @@ build
 genesis.json
 password.txt
 clef
+clef-node1
+clef-node2
 boot.key
 audit.log
 node1
