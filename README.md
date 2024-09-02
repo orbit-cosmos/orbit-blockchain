@@ -151,7 +151,6 @@ $ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 *Note: You could also use a full-fledged `geth` node as a bootnode, but it's the less
 recommended way for development deployments. We recommend using a regular node as bootstrap node for production deployments.*
 
-
 ## run bootnode as regular geth node
 `./build/bin/geth --networkid=271997 --datadir ./my-bootnode --port 30305 --authrpc.port 8553`
 
@@ -163,7 +162,7 @@ recommended way for development deployments. We recommend using a regular node a
 
 
 ## start node2
- `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --unlock 0x6f2be83aa9179e71dada3e94b274e9dbf10e4702 -allow-insecure-unlock`
+ `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --miner.etherbase=0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 --mine --unlock 0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 -allow-insecure-unlock`
 
 
 ## connect to geth JavaScript console
