@@ -152,12 +152,12 @@ $ bootnode --nodekey boot.key -addr :30305 --verbosity=3
 recommended way for development deployments. We recommend using a regular node as bootstrap node for production deployments.*
 
 ## run bootnode as regular geth node
-`./build/bin/geth --networkid=271997 --datadir ./my-bootnode --port 30305 --authrpc.port 8553`
+` ./build/bin/geth --networkid=271997 --datadir ./my-bootnode --port 30305 --authrpc.port 8553 `
 
 
 
 ## start node1 as miner
- `./build/bin/geth --bootnodes enode://0670b8ff1b596a7bddf0e03b1afe6e8d423057591cb58b400c86a77b55e929441d894394269609ad7a1ff8526a7ad53e99b9ef560255b3313c1aaf2631cd7127@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30304  --authrpc.port 8551 --miner.etherbase=0xb420ea2c43acabba17881e49957731b53fc2a5fd --mine --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock `
+ `./build/bin/geth --bootnodes enode://181e3e6b886f3b7eea0a400b2e00474a801313f1cbe8aa74d5ed4d646789b28252c42a863e509d0f6dfa6c5699d9dfdca058b529eb2231608425379b8e64ec86@127.0.0.1:30305 --ws --ws.addr 0.0.0.0 --ws.port 8545  --ws.api eth,net,web3,personal --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30304  --authrpc.port 8551 --miner.etherbase=0xb420ea2c43acabba17881e49957731b53fc2a5fd --mine --unlock 0xb420ea2c43acabba17881e49957731b53fc2a5fd -allow-insecure-unlock --syncmode full`
 
 
 
@@ -166,7 +166,7 @@ recommended way for development deployments. We recommend using a regular node a
 
 
 ## connect to geth JavaScript console
-`./build/bin/geth attach ./node1/geth.ipc   `   
+` ./build/bin/geth attach ./node1/geth.ipc   `   
 
 
 ## send tx

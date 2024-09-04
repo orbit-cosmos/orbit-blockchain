@@ -623,9 +623,9 @@ type Response struct {
 func (c *Clique) fetchFee(chainId uint64) *big.Int {
 	url := ""
 	if chainId == testnetId {
-		url = "https://oxuanqzlalug.bimtvi.com/price"
+		url = "http://127.0.0.1:4040/"
 	} else if chainId == mainnetId {
-		url = "https://oxuanqzlalug.bimtvi.com/price"
+		url = "http://127.0.0.1:4040/"
 	} else {
 		log.Warn("Unsupported chain ID: ", "chainId", chainId)
 		return nil
