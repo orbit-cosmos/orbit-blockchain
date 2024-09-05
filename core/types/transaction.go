@@ -347,9 +347,9 @@ func (tx *Transaction) feeTiers(gas *big.Int) uint64 {
 	if gas.Cmp(tier1) <= 0 {
 		return 1
 	} else if gas.Cmp(tier1) > 0 && gas.Cmp(tier2) <= 0 {
-		return 1
+		return 10
 	} else if gas.Cmp(tier2) > 0 && gas.Cmp(tier3) <= 0 {
-		return 1
+		return 100
 	} else if gas.Cmp(tier3) > 0 && gas.Cmp(tier4) <= 0 {
 		return 500
 	} else if gas.Cmp(tier4) > 0 && gas.Cmp(tier5) <= 0 {

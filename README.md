@@ -145,7 +145,7 @@ the internet. The clean way is to configure and run a dedicated bootnode:
 
 ```shell
 $ bootnode --genkey=boot.key
-$ bootnode --nodekey boot.key -addr :30305 --verbosity=3
+$ bootnode --nodekey boot.key -addr $(hostname -I | awk '{print $1}' ):30305 --verbosity=3
 ```
 
 *Note: You could also use a full-fledged `geth` node as a bootnode, but it's the less
