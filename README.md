@@ -33,7 +33,9 @@ Recommended:
 
 ## generate new account
 `./build/bin/geth account new --datadir ./my-bootnode `
+
 ` ./build/bin/geth account new --datadir ./node1 `
+
 ` ./build/bin/geth account new --datadir ./node2 `
 
 
@@ -76,23 +78,23 @@ All combined is 0x00000000000000000000000000000000000000000000000000000000000000
     
     "timestamp": "0x00",
     "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-    "extraData": "0x0000000000000000000000000000000000000000000000000000000000000000b420ea2c43acabba17881e49957731b53fc2a5fd0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "extraData": "0x0000000000000000000000000000000000000000000000000000000000000000b420ea2c43acabba17881e49957731b53fc2a5fd1671c717954133fef9325d7c2c32301b57cd49160000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
     "difficulty":"0x000000",
     "gasLimit": "0x1c9c380",
     "nonce":"0x0000000000000042",
     "coinbase": "0x0000000000000000000000000000000000000000",
     "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "alloc": {
-        "0x6f2be83aa9179e71dada3e94b274e9dbf10e4702": {
+        "b420ea2c43acabba17881e49957731b53fc2a5fd": {
             "balance": "0x3635c9adc5dea00000"
         },
-        "0xb420ea2c43acabba17881e49957731b53fc2a5fd": {
+        "1671c717954133fef9325d7c2c32301b57cd4916": {
             "balance": "0x3635c9adc5dea00000"
         }
     },
-     "feePerTx":"",
-    "proposedFee":"",
-    "votes":""
+    "feePerTx":1,
+    "proposedFee":1,
+    "votes":0
 }
 ```
 
@@ -162,7 +164,7 @@ recommended way for development deployments. We recommend using a regular node a
 
 
 ## start node2
- `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --miner.etherbase=0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 --mine --unlock 0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 -allow-insecure-unlock`
+ `./build/bin/geth --bootnodes enode://672267382b4ae546a471b5cf3984e91e7024b8d46a67788fc3d898bf7528a4b001fa9a5887b32088086d16f74fa4ebc09cb557ac33015efd6a5fed4b2faccc7b@192.168.18.16:30305 --ws --ws.addr 0.0.0.0 --ws.port 8545  --ws.api eth,net,web3,personal --http --http.addr 0.0.0.0 --http.port 8545 --http.corsdomain "*" --http.api eth,net,web3,personal --networkid=271997 --datadir ./node1 --signer ./clef/clef.ipc --port 30306  --authrpc.port 8552 --miner.etherbase=0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 --mine --unlock 0xeF008F3ECE189110d25cBeAbE3fE7183E767fF80 -allow-insecure-unlock --syncmode full`
 
 
 ## connect to geth JavaScript console
@@ -187,6 +189,8 @@ recommended way for development deployments. We recommend using a regular node a
 `admin.nodeInfo`
 
 `admin.peers`
+## add new sealer/miner/validator
+`clique.propose("0x76da2973add8f149c31c571ad379785528c91fb9",true)`
 
 
 ## References
