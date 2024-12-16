@@ -25,10 +25,12 @@ import (
 
 // Genesis hashes to enforce below configs on.
 var (
-	MainnetGenesisHash = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
-	HoleskyGenesisHash = common.HexToHash("0xb5f7f912443c940f21fd611f12828d75b534364ed9e95ca4e307729a4661bde4")
-	SepoliaGenesisHash = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
-	GoerliGenesisHash  = common.HexToHash("0xbf7e331f7f7c1dd2e05159666b3bf8bc7a8a3a9eb1d518969eab529dd9b88c1a")
+	MainnetGenesisHash      = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
+	HoleskyGenesisHash      = common.HexToHash("0xb5f7f912443c940f21fd611f12828d75b534364ed9e95ca4e307729a4661bde4")
+	SepoliaGenesisHash      = common.HexToHash("0x25a5cc106eea7138acab33231d7160d69cb777ee0c2c553fcddf5138993e6dd9")
+	GoerliGenesisHash       = common.HexToHash("0xbf7e331f7f7c1dd2e05159666b3bf8bc7a8a3a9eb1d518969eab529dd9b88c1a")
+	OrbitTestnetGenesisHash = common.HexToHash("0x6309fe9c5eef695c083aea83ccb671da98480b30e558e50a695f49d0b29c7626")
+	OrbitMainnetGenesisHash = common.HexToHash("0x6309fe9c5eef695c083aea83ccb671da98480b30e558e50a695f49d0b29c7626")
 )
 
 func newUint64(val uint64) *uint64 { return &val }
@@ -132,6 +134,43 @@ var (
 			Epoch:  30000,
 		},
 	}
+
+	// TestnetChainConfig contains the chain parameters to run a node on the Testnet network.
+	OrbitTestnetChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(271997),
+		HomesteadBlock:      big.NewInt(0),
+		EIP150Block:         big.NewInt(0),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      big.NewInt(0),
+		ConstantinopleBlock: big.NewInt(0),
+		PetersburgBlock:     big.NewInt(0),
+		IstanbulBlock:       big.NewInt(0),
+		BerlinBlock:         big.NewInt(0),
+		Clique: &CliqueConfig{
+			Period: 3,
+			Epoch:  30000,
+		},
+	}
+
+	// TestnetChainConfig contains the chain parameters to run a node on the Testnet network.
+	OrbitMainnetChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(1997),
+		HomesteadBlock:      big.NewInt(0),
+		EIP150Block:         big.NewInt(0),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      big.NewInt(0),
+		ConstantinopleBlock: big.NewInt(0),
+		PetersburgBlock:     big.NewInt(0),
+		IstanbulBlock:       big.NewInt(0),
+		BerlinBlock:         big.NewInt(0),
+		Clique: &CliqueConfig{
+			Period: 3,
+			Epoch:  30000,
+		},
+	}
+
 	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
@@ -277,10 +316,12 @@ var (
 
 // NetworkNames are user friendly names to use in the chain spec banner.
 var NetworkNames = map[string]string{
-	MainnetChainConfig.ChainID.String(): "mainnet",
-	GoerliChainConfig.ChainID.String():  "goerli",
-	SepoliaChainConfig.ChainID.String(): "sepolia",
-	HoleskyChainConfig.ChainID.String(): "holesky",
+	MainnetChainConfig.ChainID.String():      "mainnet",
+	GoerliChainConfig.ChainID.String():       "goerli",
+	SepoliaChainConfig.ChainID.String():      "sepolia",
+	HoleskyChainConfig.ChainID.String():      "holesky",
+	OrbitTestnetChainConfig.ChainID.String(): "orbit-testnet",
+	OrbitMainnetChainConfig.ChainID.String(): "orbit-mainnet",
 }
 
 // ChainConfig is the core config which determines the blockchain settings.
@@ -592,14 +633,14 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 		{name: "istanbulBlock", block: c.IstanbulBlock},
 		{name: "muirGlacierBlock", block: c.MuirGlacierBlock, optional: true},
 		{name: "berlinBlock", block: c.BerlinBlock},
-		{name: "londonBlock", block: c.LondonBlock},
-		{name: "arrowGlacierBlock", block: c.ArrowGlacierBlock, optional: true},
-		{name: "grayGlacierBlock", block: c.GrayGlacierBlock, optional: true},
-		{name: "mergeNetsplitBlock", block: c.MergeNetsplitBlock, optional: true},
-		{name: "shanghaiTime", timestamp: c.ShanghaiTime},
-		{name: "cancunTime", timestamp: c.CancunTime, optional: true},
-		{name: "pragueTime", timestamp: c.PragueTime, optional: true},
-		{name: "verkleTime", timestamp: c.VerkleTime, optional: true},
+		// {name: "londonBlock", block: c.LondonBlock, optional: true},
+		// {name: "arrowGlacierBlock", block: c.ArrowGlacierBlock, optional: true},
+		// {name: "grayGlacierBlock", block: c.GrayGlacierBlock, optional: true},
+		// {name: "mergeNetsplitBlock", block: c.MergeNetsplitBlock, optional: true},
+		// {name: "shanghaiTime", timestamp: c.ShanghaiTime},
+		// {name: "cancunTime", timestamp: c.CancunTime, optional: true},
+		// {name: "pragueTime", timestamp: c.PragueTime, optional: true},
+		// {name: "verkleTime", timestamp: c.VerkleTime, optional: true},
 	} {
 		if lastFork.name != "" {
 			switch {

@@ -260,9 +260,50 @@ func (st *StateTransition) buyGas() error {
 	}
 	st.gasRemaining += st.msg.GasLimit
 
+	subFee := st.evm.Context.FeePerTx
 	st.initialGas = st.msg.GasLimit
-	st.state.SubBalance(st.msg.From, mgval)
+
+	feeMultiplier := new(big.Int)
+
+	feeMultiplier = new(big.Int).SetUint64(st.feeTiers(new(big.Int).SetUint64(st.msg.GasLimit)))
+	agrFee := new(big.Int)
+	agrFee = agrFee.Mul(subFee, feeMultiplier)
+	st.state.SubBalance(st.msg.From, agrFee)
+
 	return nil
+}
+
+func (st *StateTransition) feeTiers(gas *big.Int) uint64 {
+	// Define the tier thresholds
+	tier1 := big.NewInt(500_000)    // 500K
+	tier2 := big.NewInt(600_000)    // 600K
+	tier3 := big.NewInt(800_000)    // 800K
+	tier4 := big.NewInt(1_200_000)  // 1.2M
+	tier5 := big.NewInt(2_000_000)  // 2M
+	tier6 := big.NewInt(5_000_000)  // 5M
+	tier7 := big.NewInt(15_000_000) // 15M
+	tier8 := big.NewInt(30_000_000) // 30M
+
+	// Check the gas amount against the tier thresholds
+	if gas.Cmp(tier1) <= 0 {
+		return 1
+	} else if gas.Cmp(tier1) > 0 && gas.Cmp(tier2) <= 0 {
+		return 10
+	} else if gas.Cmp(tier2) > 0 && gas.Cmp(tier3) <= 0 {
+		return 100
+	} else if gas.Cmp(tier3) > 0 && gas.Cmp(tier4) <= 0 {
+		return 500
+	} else if gas.Cmp(tier4) > 0 && gas.Cmp(tier5) <= 0 {
+		return 1000
+	} else if gas.Cmp(tier5) > 0 && gas.Cmp(tier6) <= 0 {
+		return 1500
+	} else if gas.Cmp(tier6) > 0 && gas.Cmp(tier7) <= 0 {
+		return 2000
+	} else if gas.Cmp(tier7) > 0 && gas.Cmp(tier8) <= 0 {
+		return 4000
+	}
+
+	return 8000
 }
 
 func (st *StateTransition) preCheck() error {
@@ -435,7 +476,17 @@ func (st *StateTransition) TransitionDb() (*ExecutionResult, error) {
 	} else {
 		fee := new(big.Int).SetUint64(st.gasUsed())
 		fee.Mul(fee, effectiveTip)
-		st.state.AddBalance(st.evm.Context.Coinbase, fee)
+		// st.state.AddBalance(st.evm.Context.Coinbase, fee)
+		fixedFee := st.evm.Context.FeePerTx
+
+		feeForGasUsed := new(big.Int).SetUint64(st.gasUsed())
+		feeMultiplier := new(big.Int)
+
+		feeMultiplier = new(big.Int).SetUint64(st.feeTiers(feeForGasUsed))
+		agrFee := new(big.Int)
+		agrFee = agrFee.Mul(fixedFee, feeMultiplier)
+		st.state.AddBalance(st.evm.Context.Coinbase, agrFee)
+
 	}
 
 	return &ExecutionResult{
@@ -453,8 +504,21 @@ func (st *StateTransition) refundGas(refundQuotient uint64) {
 	}
 	st.gasRemaining += refund
 
-	// Return ETH for remaining gas, exchanged at the original rate.
-	remaining := new(big.Int).Mul(new(big.Int).SetUint64(st.gasRemaining), st.msg.GasPrice)
+	baseFeePerTx := st.evm.Context.FeePerTx
+
+	initialFeeMultiplier := new(big.Int)
+	usedFeeMultiplier := new(big.Int)
+
+	initialFeeMultiplier = new(big.Int).SetUint64(st.feeTiers(new(big.Int).SetUint64(st.initialGas)))
+	usedFeeMultiplier = new(big.Int).SetUint64(st.feeTiers(new(big.Int).SetUint64(st.gasUsed())))
+
+	initialFee := new(big.Int)
+	initialFee = initialFee.Mul(baseFeePerTx, initialFeeMultiplier)
+
+	usedFee := new(big.Int)
+	usedFee = usedFee.Mul(baseFeePerTx, usedFeeMultiplier)
+
+	remaining := new(big.Int).Sub(initialFee, usedFee)
 	st.state.AddBalance(st.msg.From, remaining)
 
 	// Also return remaining gas to the block gas counter so it is

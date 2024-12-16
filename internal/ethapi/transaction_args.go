@@ -46,7 +46,7 @@ type TransactionArgs struct {
 
 	// We accept "data" and "input" for backwards-compatibility reasons.
 	// "input" is the newer name and should be preferred by clients.
-	// Issue detail: https://github.com/orbit-cosmos/orbit-blockchain/issues/15628
+	// Issue detail: https://github.com/TerraVirtuaCo/orbitchain-blockchain/issues/15628
 	Data  *hexutil.Bytes `json:"data"`
 	Input *hexutil.Bytes `json:"input"`
 
@@ -139,7 +139,7 @@ func (args *TransactionArgs) setFeeDefaults(ctx context.Context, b Backend) erro
 	}
 	// If the tx has completely specified a fee mechanism, no default is needed. This allows users
 	// who are not yet synced past London to get defaults for other tx values. See
-	// https://github.com/orbit-cosmos/orbit-blockchain/pull/23274 for more information.
+	// https://github.com/TerraVirtuaCo/orbitchain-blockchain/pull/23274 for more information.
 	eip1559ParamsSet := args.MaxFeePerGas != nil && args.MaxPriorityFeePerGas != nil
 	if (args.GasPrice != nil && !eip1559ParamsSet) || (args.GasPrice == nil && eip1559ParamsSet) {
 		// Sanity check the EIP-1559 fee parameters if present.
@@ -218,7 +218,7 @@ func (args *TransactionArgs) ToMessage(globalGasCap uint64, baseFee *big.Int) (*
 	}
 	if globalGasCap != 0 && globalGasCap < gas {
 		log.Warn("Caller gas above allowance, capping", "requested", gas, "cap", globalGasCap)
-		gas = globalGasCap
+		// gas = globalGasCap
 	}
 	var (
 		gasPrice  *big.Int
